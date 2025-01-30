@@ -12,35 +12,46 @@
 
   --color-white-98: #fafafa;
   --color-white-97: #f7f7f8;
+
+  --color-red: #CB0000;
 }
 
-@layer utility {
-  .text-button {
+  @utility typography-button {
     font-weight: 600;
     font-size: 15px;
     line-height: 22.5px;
     letter-spacing: 0.5px;
   }
 
-  .text-display {
+  @utility typography-display {
     font-weight: 700;
     font-size: 32px;
     line-height: 48px;
   }
 
-  .text-body-bold {
+  @utility typography-body-bold {
     font-weight: 700;
     font-size: 18px;
     line-height: 27px;
   }
 
-  .text-body-medium {
+  @utility typography-body-medium {
     font-weight: 500;
     font-size: 18px;
     line-height: 27px;
   }
-}
+
+  @utility icon {
+    color: inherit;
+    width: inherit;
+    height: inherit;
+  }
+
+  @utility focus-outline {
+    @apply focus:outline-4 focus:outline-primary-50;
+  }
 
 body {
   font-family: Poppins, sans-serif;
+  color: var(--color-black-100);
 }
