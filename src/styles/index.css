@@ -1,0 +1,46 @@
+@import 'tailwindcss';
+@import './fonts.css';
+
+@theme {
+  --color-primary: #7209B7;
+  --color-primary-50: rgba(114, 9, 183, 0.5);
+
+  --color-black-100: #353535;
+  --color-black-75: #676767;
+  --color-black-50: #9b9b9b;
+  --color-black-25: #cdcdcd;
+
+  --color-white-98: #fafafa;
+  --color-white-97: #f7f7f8;
+}
+
+@layer utility {
+  .text-button {
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 22.5px;
+    letter-spacing: 0.5px;
+  }
+
+  .text-display {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 48px;
+  }
+
+  .text-body-bold {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 27px;
+  }
+
+  .text-body-medium {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+  }
+}
+
+body {
+  font-family: Poppins, sans-serif;
+}
