@@ -8,19 +8,21 @@ export enum CollisionShape {
 }
 
 export default class EventManager {
-  private controls: CanvasControl[] = [];
+  private controls: Set<CanvasControl> = new Set();
 
   constructor(public canvas: HTMLCanvasElement) {
     this.canvas.addEventListener('click', this.handleEvent.bind(this));
     this.canvas.addEventListener('pointerdown', this.handleEvent.bind(this));
     this.canvas.addEventListener('pointerup', this.handleEvent.bind(this));
     this.canvas.addEventListener('pointermove', this.handleEvent.bind(this));
-    this.canvas.addEventListener('keydown', this.handleKeyDown.bind(this));
-    this.canvas.addEventListener('keyup', this.handleKeyUp.bind(this));
   }
 
   register(control: CanvasControl) {
-    this.controls.push(control);
+    this.controls.add(control);
+  }
+
+  unregister(control: CanvasControl) {
+    this.controls.delete(control);
   }
 
   private handleEvent(event: MouseEvent | PointerEvent) {
@@ -29,10 +31,6 @@ export default class EventManager {
       control.dispatchEvent(new Event(event.type));
     }
   }
-
-  private handleKeyDown() {}
-
-  private handleKeyUp() {}
 
   private *checkCollisions(pointer: Point2D) {
     for (const control of this.controls) {

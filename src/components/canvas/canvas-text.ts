@@ -1,103 +1,127 @@
-import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
+import CanvasTextControl, { CanvasTextControlProps } from './canvas-text-control.ts';
+import CanvasTextarea from './canvas-textarea.ts';
 import EventManager from './event-manager.ts';
 import TransformBox from './transform-box.ts';
 
-export interface CanvasTextProps extends CanvasControlProps {
-  fontFamily: string;
-  fontSize: string;
-  lineHeight: string;
-  fontWeight: string;
-  color: string;
-}
+export default class CanvasText extends CanvasTextControl {
+  private isEditable: boolean = false;
+  private content: string[][] = [];
+  private input: CanvasTextarea;
 
-export default class CanvasText extends CanvasControl {
-  public fontFamily: string;
-  public fontSize: string;
-  public lineHeight: string;
-  public fontWeight: string;
-  private color: string;
-  private content: string[][] = [['Type', 'your', 'text', 'here']];
-
-  constructor(context: CanvasRenderingContext2D, eventManager: EventManager, props: CanvasTextProps) {
+  constructor(context: CanvasRenderingContext2D, eventManager: EventManager, props: CanvasTextControlProps) {
     super(context, eventManager, props);
-
-    this.fontFamily = props.fontFamily;
-    this.fontSize = props.fontSize;
-    this.lineHeight = props.lineHeight;
-    this.fontWeight = props.fontWeight;
-    this.color = props.color;
 
     this.context.font = `${this.fontWeight} ${this.fontSize}/${this.lineHeight} ${this.fontFamily}`;
     this.context.textAlign = 'center';
     this.context.textBaseline = 'top';
 
-    this.width = this.context.measureText(this.content.join(' ')).width;
-    this.height = parseInt(this.fontSize);
+    this.input = this.factory.create(CanvasTextarea, props);
+
+    this.handleResizeStart = this.handleResizeStart.bind(this);
   }
 
-  getContent() {
-    return this.content.flat().join(' ');
-  }
-
-  setContent(text: string) {
-    this.content = this.fitText(text);
-  }
-
-  setColor(color: string) {
-    this.color = color;
+  destructor() {
+    this.input.hide();
+    super.destructor();
   }
 
   setEditable(editable: boolean) {
-    const paddingX = 24;
-    const paddingY = 12;
+    let transformBox: TransformBox | undefined;
 
     if (editable) {
-      this.children.push(
-        new TransformBox(this.context, this.eventManager, {
-          x: this.x - paddingX,
-          y: this.y - paddingY,
-          width: this.width + 2 * paddingX,
-          height: parseInt(this.fontSize) + 2 * paddingY,
-          controls: this,
-        }),
-      );
+      transformBox = new TransformBox(this.context, this.eventManager, {
+        x: this.x,
+        y: this.y,
+        width: this.width,
+        height: this.height,
+        controls: this,
+      });
+
+      transformBox.addEventListener('resizestart', this.handleResizeStart);
+
+      this.children.push(transformBox);
+      this.input.show();
+      this.isEditable = true;
     } else {
+      this.content = this.fitText(this.input.value);
+      transformBox?.removeEventListener('resizestart', this.handleResizeStart);
       this.children.length = 0;
+      this.input.hide();
+      this.isEditable = false;
     }
   }
 
   async draw() {
-    this.context.fillStyle = this.color;
+    if (this.isEditable) {
+      await this.input.draw();
+    } else {
+      for (let i = 0; i < this.content.length; i++) {
+        const line = this.content[i];
+        const text = line.join(' ');
+        const textMetrics = this.context.measureText(text);
+        const y = this.y + this.paddingY + textMetrics.fontBoundingBoxAscent + i * parseInt(this.lineHeight);
 
-    this.content.forEach((line, index) => {
-      this.context.fillText(line.join(' '), this.x + this.width / 2, this.y + index * parseInt(this.lineHeight));
-    });
-
-    await super.draw();
-  }
-
-  override resize(deltaWidth: number, deltaHeight: number) {
-    this.setContent(this.getContent());
-    super.resize(deltaWidth, deltaHeight);
-  }
-
-  private fitText(text: string) {
-    const content = [text.split(' ')];
-
-    for (let i = 0; i < content.length; i++) {
-      const line = content[i];
-      while (this.context.measureText(line.join(' ')).width > this.width) {
-        if (!content[i + 1]) {
-          content[i + 1] = [];
-        }
-        const word = line.pop();
-
-        if (!word) {
-          // should break word
+        if (y >= this.boundary.bottom) {
           break;
         }
 
-        content[i + 1].unshift(word);
+        this.context.fillStyle = '#f00';
+        this.context.fillText(text, this.x + this.width / 2, y);
+      }
+    }
+    await super.draw();
+  }
+
+  override move(deltaX: number, deltaY: number) {
+    super.move(deltaX, deltaY);
+    this.input.move(deltaX, deltaY);
+  }
+
+  override resize(deltaWidth: number, deltaHeight: number) {
+    super.resize(deltaWidth, deltaHeight);
+    this.input.resize(deltaWidth, deltaHeight);
+  }
+
+  private handleResizeStart(event: Event) {
+    this.input.control.style.setProperty('pointer-events', 'none');
+
+    event.target?.addEventListener(
+      'resizeend',
+      () => {
+        this.input.control.style.removeProperty('pointer-events');
+      },
+      { once: true },
+    );
+  }
+
+  private fitText(text: string) {
+    const content = text.split('\n').map((line) => line.split(' '));
+    let wordBreaking = false;
+
+    for (let i = 0; i < content.length; i++) {
+      const line = content[i];
+      wordBreaking = false;
+
+      while (this.context.measureText(line.join(' ')).width > this.width - this.paddingX * 2) {
+        if (!content[i + 1]) {
+          content[i + 1] = [];
+        }
+
+        if (line.length === 1) {
+          const letters = line[0].split('');
+
+          if (!wordBreaking) {
+            content.splice(i + 1, 0, [letters.pop()!]);
+            wordBreaking = true;
+          } else {
+            content[i + 1][0] = `${letters.pop()!}${content[i + 1][0]}`;
+          }
+
+          line[0] = letters.join('');
+          continue;
+        }
+
+        content[i + 1].unshift(line.pop()!);
       }
     }
 

@@ -65,11 +65,16 @@ export default class EditorService {
       color: getThemeValue('--color-black-75'),
       x: 200,
       y: 200,
+      width: 350,
+      height: 120,
+      paddingX: 24,
+      paddingY: 12,
     });
     text.setEditable(true);
     text.addEventListener(
       'remove',
       async () => {
+        text.destructor();
         this.controls.delete(text);
         await this.draw();
       },
@@ -107,7 +112,10 @@ export default class EditorService {
   async reset() {
     this.background = undefined;
     this.isEditing = false;
-    this.controls.clear();
+    this.controls.forEach((control) => {
+      control.destructor();
+      this.controls.delete(control);
+    });
     await this.draw();
   }
 

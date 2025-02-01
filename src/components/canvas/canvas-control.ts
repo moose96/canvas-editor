@@ -6,6 +6,8 @@ export interface CanvasControlProps {
   y?: number;
   width?: number;
   height?: number;
+  paddingX?: number;
+  paddingY?: number;
   [key: string]: any;
 }
 
@@ -14,6 +16,8 @@ export default class CanvasControl extends EventTarget {
   public y: number = 0;
   public width: number = 0;
   public height: number = 0;
+  public paddingX: number = 0;
+  public paddingY: number = 0;
   public children: (CanvasControl | ((control: CanvasControl) => void))[] = [];
   public collisionShape: CollisionShape = CollisionShape.Rectangle;
   protected factory: CanvasControlFactory;
@@ -33,7 +37,18 @@ export default class CanvasControl extends EventTarget {
       this.y = props.y ?? 0;
       this.width = props.width ?? 0;
       this.height = props.height ?? 0;
+      this.paddingX = props.paddingX ?? 0;
+      this.paddingY = props.paddingY ?? 0;
     }
+  }
+
+  destructor() {
+    this.eventManager.unregister(this);
+    this.children.forEach((child) => {
+      if (typeof child !== 'function') {
+        child.destructor();
+      }
+    });
   }
 
   get boundary() {

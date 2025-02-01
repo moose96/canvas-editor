@@ -107,6 +107,7 @@ export default class TransformBox extends CanvasControl {
   private handleResizeDown() {
     this.eventManager.canvas.addEventListener('pointermove', this.handleResizeMove);
     this.eventManager.canvas.addEventListener('pointerup', this.handleResizeUp.bind(this), { once: true });
+    this.dispatchEvent(new Event('resizestart'));
   }
 
   private handleResizeMove(event: PointerEvent) {
@@ -119,6 +120,7 @@ export default class TransformBox extends CanvasControl {
 
   private handleResizeUp() {
     this.eventManager.canvas.removeEventListener('pointermove', this.handleResizeMove);
+    this.dispatchEvent(new Event('resizeend'));
   }
 
   private handleDelete() {
