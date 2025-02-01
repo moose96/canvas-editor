@@ -2,6 +2,8 @@ import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
 import EventManager from './event-manager.ts';
 import TransformBox from './transform-box.ts';
 
+const initialWidth = 300;
+
 export default class CanvasImage extends CanvasControl {
   private image?: HTMLImageElement;
 
@@ -18,8 +20,10 @@ export default class CanvasImage extends CanvasControl {
           return;
         }
 
-        this.width = this.image.width;
-        this.height = this.image.height;
+        const aspectRatio = this.image.width / this.image.height;
+
+        this.width = initialWidth;
+        this.height = initialWidth / aspectRatio;
 
         resolve();
       });

@@ -1,18 +1,26 @@
 import { ReactNode } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 export interface TextButtonProps {
-  label: string;
-  icon: ReactNode;
+  label?: string;
+  icon?: ReactNode;
   onClick?: () => void;
+  className?: string;
+  autoFocus?: boolean;
 }
 
-export default function TextButton({ label, icon, onClick }: TextButtonProps) {
+export default function TextButton({ label, icon, onClick, className = '', autoFocus }: TextButtonProps) {
   return (
     <button
-      className="typography-body-medium text-red flex gap-2 border-b border-red cursor-pointer h-max items-center"
+      className={twMerge(
+        'typography-body-medium flex gap-2 cursor-pointer h-max items-center rounded-[5px]',
+        'focus:focus-outline',
+        className,
+      )}
       onClick={onClick}
+      autoFocus={autoFocus}
     >
-      <span>{label}</span>
+      {label && <span>{label}</span>}
       {icon}
     </button>
   );

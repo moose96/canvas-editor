@@ -10,10 +10,14 @@ import PrimaryButton from './components/atoms/primary-button.tsx';
 import TextButton from './components/atoms/text-button.tsx';
 import EditorService from './components/canvas/editor-service.ts';
 import ActionButton from './components/molecules/action-button.tsx';
+import RemoveAlert, { RemoveAlertAction } from './components/organisms/remove-alert.tsx';
+import useModal from './hooks/use-modal.tsx';
+import readImageFile from './utility/read-image-file.ts';
 
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const editorService = useRef<EditorService>();
+  const { modalElement, openModal } = useModal(RemoveAlert);
 
   const getEditorService = async () => {
     if (!canvasRef.current) {
@@ -48,9 +52,11 @@ export default function App() {
       return;
     }
 
-    await editorService.addImage(
-      'https://fastly.picsum.photos/id/248/200/200.jpg?hmac=36BllTJxy_tU762d2RYKfYaSQ3-RmP74hVxabGP_u3o',
-    );
+    const file = await readImageFile();
+
+    if (file) {
+      await editorService.addImage(file);
+    }
   };
 
   const handleBackground = async () => {
@@ -60,9 +66,11 @@ export default function App() {
       return;
     }
 
-    await editorService.setBackground(
-      'https://fastly.picsum.photos/id/188/1500/1200.jpg?hmac=Ud6sFBV7D7iKYZ2sdQPghHR5sYCFP9qQegF9mUcMaUY',
-    );
+    const file = await readImageFile();
+
+    if (file) {
+      await editorService.setBackground(file);
+    }
   };
 
   const handleReset = async () => {
@@ -72,7 +80,11 @@ export default function App() {
       return;
     }
 
-    await editorService.reset();
+    const actionType = await openModal();
+
+    if (actionType === RemoveAlertAction.Reset) {
+      await editorService.reset();
+    }
   };
 
   const handleExport = async () => {
@@ -82,7 +94,7 @@ export default function App() {
       return;
     }
 
-    editorService.export();
+    await editorService.export();
   };
 
   return (
@@ -95,7 +107,7 @@ export default function App() {
               <Logo className="w-16 h-16" />
               <h1 className="typography-display text-black-75">CanvasEditor</h1>
             </div>
-            <TextButton label="Reset" icon={<Reset />} onClick={handleReset} />
+            <TextButton className="text-red border-b border-red" label="Reset" icon={<Reset />} onClick={handleReset} />
           </div>
           <Line />
           <div className="bg-white-97 rounded-[10px] px-4 py-6">
@@ -112,6 +124,7 @@ export default function App() {
           <PrimaryButton label="Export to PNG" className="self-end w-max" onClick={handleExport} />
         </div>
       </div>
+      {modalElement}
     </div>
   );
 }
