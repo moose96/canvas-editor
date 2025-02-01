@@ -1,6 +1,7 @@
 import { Canvg, Property } from 'canvg';
 
 import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
+import EventManager from './event-manager.ts';
 
 export interface CanvasIconProps extends CanvasControlProps {
   content?: string;
@@ -10,8 +11,12 @@ export interface CanvasIconProps extends CanvasControlProps {
 export default class CanvasIcon extends CanvasControl {
   private readonly icon?: Canvg;
 
-  constructor(context: CanvasRenderingContext2D, { content, color, ...props }: CanvasIconProps = {}) {
-    super(context, props);
+  constructor(
+    context: CanvasRenderingContext2D,
+    eventManager: EventManager,
+    { content, color, ...props }: CanvasIconProps = {},
+  ) {
+    super(context, eventManager, props);
 
     if (content) {
       this.icon = Canvg.fromString(this.context, content, { ignoreDimensions: true, ignoreClear: true });

@@ -1,14 +1,12 @@
 import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
+import EventManager from './event-manager.ts';
 import TransformBox from './transform-box.ts';
 
 export default class CanvasImage extends CanvasControl {
   private image?: HTMLImageElement;
 
-  constructor(
-    protected context: CanvasRenderingContext2D,
-    props: CanvasControlProps,
-  ) {
-    super(context, props);
+  constructor(context: CanvasRenderingContext2D, eventManager: EventManager, props: CanvasControlProps) {
+    super(context, eventManager, props);
   }
 
   async setImage(src: string) {
@@ -33,11 +31,12 @@ export default class CanvasImage extends CanvasControl {
   setEditable(editable: boolean) {
     if (editable) {
       this.children.push(
-        new TransformBox(this.context, {
+        new TransformBox(this.context, this.eventManager, {
           x: this.x,
           y: this.y,
           width: this.width,
           height: this.height,
+          controls: this,
         }),
       );
     } else {
@@ -50,7 +49,7 @@ export default class CanvasImage extends CanvasControl {
       return;
     }
 
-    this.context.drawImage(this.image, this.x, this.y);
+    this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
     await super.draw();
   }
 }

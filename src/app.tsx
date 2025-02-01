@@ -15,24 +15,24 @@ export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const editorService = useRef<EditorService>();
 
-  const getEditorService = () => {
+  const getEditorService = async () => {
     if (!canvasRef.current) {
       return;
     }
 
     if (!editorService.current) {
-      editorService.current = new EditorService(canvasRef.current);
+      editorService.current = await EditorService.create(canvasRef.current);
     }
 
     return editorService.current;
   };
 
   useEffect(() => {
-    getEditorService()?.draw();
+    getEditorService().then((service) => service?.draw());
   }, []);
 
   const handleText = async () => {
-    const editorService = getEditorService();
+    const editorService = await getEditorService();
 
     if (!editorService) {
       return;
@@ -42,7 +42,7 @@ export default function App() {
   };
 
   const handleImage = async () => {
-    const editorService = getEditorService();
+    const editorService = await getEditorService();
 
     if (!editorService) {
       return;
@@ -54,7 +54,7 @@ export default function App() {
   };
 
   const handleBackground = async () => {
-    const editorService = getEditorService();
+    const editorService = await getEditorService();
 
     if (!editorService) {
       return;
@@ -66,7 +66,7 @@ export default function App() {
   };
 
   const handleReset = async () => {
-    const editorService = getEditorService();
+    const editorService = await getEditorService();
 
     if (!editorService) {
       return;

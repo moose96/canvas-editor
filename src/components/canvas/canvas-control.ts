@@ -1,4 +1,5 @@
 import CanvasControlFactory from './canvas-control-factory.ts';
+import EventManager, { CollisionShape } from './event-manager.ts';
 
 export interface CanvasControlProps {
   x?: number;
@@ -14,15 +15,18 @@ export default class CanvasControl extends EventTarget {
   public width: number = 0;
   public height: number = 0;
   public children: (CanvasControl | ((control: CanvasControl) => void))[] = [];
+  public collisionShape: CollisionShape = CollisionShape.Rectangle;
   protected factory: CanvasControlFactory;
 
   constructor(
     protected context: CanvasRenderingContext2D,
+    protected eventManager: EventManager,
     props?: CanvasControlProps,
   ) {
     super();
 
-    this.factory = new CanvasControlFactory(context);
+    eventManager.register(this);
+    this.factory = new CanvasControlFactory(context, eventManager);
 
     if (props) {
       this.x = props.x ?? 0;
@@ -45,5 +49,35 @@ export default class CanvasControl extends EventTarget {
 
       child.draw();
     });
+  }
+
+  move(deltaX: number, deltaY: number) {
+    this.x += deltaX;
+    this.y += deltaY;
+
+    this.children.forEach((child) => {
+      if (typeof child === 'function') {
+        return;
+      }
+
+      child.move(deltaX, deltaY);
+    });
+
+    this.dispatchEvent(new Event('change'));
+  }
+
+  resize(deltaWidth: number, deltaHeight: number) {
+    this.width += deltaWidth;
+    this.height += deltaHeight;
+
+    this.children.forEach((child) => {
+      if (typeof child === 'function') {
+        return;
+      }
+
+      child.resize(deltaWidth, deltaHeight);
+    });
+
+    this.dispatchEvent(new Event('change'));
   }
 }

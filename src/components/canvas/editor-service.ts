@@ -4,14 +4,17 @@ import { containImage, coverTarget, ObjectFit } from '../../utility/object-fit.t
 import CanvasControl from './canvas-control.ts';
 import CanvasImage from './canvas-image.ts';
 import CanvasText from './canvas-text.ts';
+import EventManager from './event-manager.ts';
 
 export default class EditorService {
   private readonly context: CanvasRenderingContext2D;
   private isEditing = false;
-  private background?: string;
-  private controls: CanvasControl[] = [];
+  private placeholder?: HTMLImageElement;
+  private background?: HTMLImageElement;
+  private controls: Set<CanvasControl> = new Set();
+  private readonly eventManager: EventManager;
 
-  constructor(private canvas: HTMLCanvasElement) {
+  private constructor(private canvas: HTMLCanvasElement) {
     const context = this.canvas.getContext('2d');
 
     if (!context) {
@@ -19,6 +22,7 @@ export default class EditorService {
     }
 
     this.context = context;
+    this.eventManager = new EventManager(this.canvas);
   }
 
   drawEmptyBackground() {
@@ -29,14 +33,23 @@ export default class EditorService {
   async addImage(src: string) {
     this.isEditing = true;
 
-    const img = new CanvasImage(this.context, {
+    const img = new CanvasImage(this.context, this.eventManager, {
       x: 200,
       y: 200,
     });
     await img.setImage(src);
     img.setEditable(true);
+    img.addEventListener(
+      'remove',
+      async () => {
+        this.controls.delete(img);
+        await this.draw();
+      },
+      { once: true },
+    );
+    img.addEventListener('change', async () => await this.draw());
 
-    this.controls.push(img);
+    this.controls.add(img);
 
     await this.draw();
   }
@@ -44,7 +57,7 @@ export default class EditorService {
   async addText() {
     this.isEditing = true;
 
-    const text = new CanvasText(this.context, {
+    const text = new CanvasText(this.context, this.eventManager, {
       fontFamily: 'Poppins, sans-serif',
       fontSize: '32px',
       lineHeight: '48px',
@@ -54,25 +67,34 @@ export default class EditorService {
       y: 200,
     });
     text.setEditable(true);
+    text.addEventListener(
+      'remove',
+      async () => {
+        this.controls.delete(text);
+        await this.draw();
+      },
+      { once: true },
+    );
+    text.addEventListener('change', async () => await this.draw());
 
-    this.controls.push(text);
+    this.controls.add(text);
 
     await this.draw();
   }
 
   async setBackground(src: string) {
     this.isEditing = true;
-    this.background = src;
+    this.background = await this.loadImage(src);
     await this.draw();
   }
 
   async draw() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    if (!this.isEditing) {
-      await this.drawImage(placeholder, ObjectFit.Contain);
+    if (!this.isEditing && this.placeholder) {
+      this.drawImage(this.placeholder, ObjectFit.Contain);
     } else if (this.background) {
-      await this.drawImage(this.background);
+      this.drawImage(this.background);
     } else {
       this.drawEmptyBackground();
     }
@@ -85,26 +107,30 @@ export default class EditorService {
   async reset() {
     this.background = undefined;
     this.isEditing = false;
-    this.controls.length = 0;
+    this.controls.clear();
     await this.draw();
   }
 
-  private drawImage(src: string, objectFit = ObjectFit.Cover) {
-    const image = new Image();
-
-    return new Promise<void>((resolve) => {
-      image.addEventListener('load', () => {
-        const params =
-          objectFit === ObjectFit.Cover
-            ? coverTarget(image.width, image.height, this.canvas.width, this.canvas.height)
-            : containImage(image.width, image.height, this.canvas.width, this.canvas.height);
-
-        this.context.drawImage(image, ...params);
-
-        resolve();
-      });
-
+  private loadImage(src: string) {
+    return new Promise<HTMLImageElement>((resolve) => {
+      const image = new Image();
+      image.addEventListener('load', () => resolve(image));
       image.src = src;
     });
+  }
+
+  private drawImage(image: HTMLImageElement, objectFit = ObjectFit.Cover) {
+    const params =
+      objectFit === ObjectFit.Cover
+        ? coverTarget(image.width, image.height, this.canvas.width, this.canvas.height)
+        : containImage(image.width, image.height, this.canvas.width, this.canvas.height);
+
+    this.context.drawImage(image, ...params);
+  }
+
+  static async create(canvas: HTMLCanvasElement) {
+    const service = new EditorService(canvas);
+    service.placeholder = await service.loadImage(placeholder);
+    return service;
   }
 }

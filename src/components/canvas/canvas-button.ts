@@ -1,10 +1,11 @@
 import center from '../../utility/center.ts';
 import fromEuclideanToPolar from '../../utility/from-euclidean-to-polar.ts';
 import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
+import EventManager from './event-manager.ts';
 
 export default class CanvasButton extends CanvasControl {
-  constructor(context: CanvasRenderingContext2D, props?: CanvasControlProps) {
-    super(context, props);
+  constructor(context: CanvasRenderingContext2D, eventManager: EventManager, props?: CanvasControlProps) {
+    super(context, eventManager, props);
 
     this.addEventListener('created', this.handleCreated.bind(this));
   }
