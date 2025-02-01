@@ -39,6 +39,11 @@ export default class CanvasTextarea extends CanvasTextControl {
     this.visible = false;
   }
 
+  setColor(color: string) {
+    this.color = color;
+    this.commitStyle();
+  }
+
   override move(deltaX: number, deltaY: number) {
     super.move(deltaX, deltaY);
     this.commitStyle();

@@ -14,6 +14,11 @@
   --color-white-97: #f7f7f8;
 
   --color-red: #CB0000;
+  --color-red-50: #CF0000;
+
+  --color-blue: #0055FF;
+
+  --color-light-green: #00DA16;
 }
 
   @utility typography-button {
