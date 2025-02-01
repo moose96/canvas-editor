@@ -3,9 +3,10 @@ import { twMerge } from 'tailwind-merge';
 export interface PrimaryButtonProps {
   label: string;
   className?: string;
+  onClick?: () => void;
 }
 
-export default function PrimaryButton({ label, className }: PrimaryButtonProps) {
+export default function PrimaryButton({ label, className, onClick }: PrimaryButtonProps) {
   return (
     <button
       className={twMerge(
@@ -15,6 +16,7 @@ export default function PrimaryButton({ label, className }: PrimaryButtonProps) 
         'disabled:text-black-25',
         className,
       )}
+      onClick={onClick}
     >
       {label}
     </button>

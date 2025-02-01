@@ -119,10 +119,28 @@ export default class EditorService {
     await this.draw();
   }
 
+  async export() {
+    this.controls.forEach((control) => {
+      if ('setEditable' in control) {
+        control.setEditable(false);
+      }
+    });
+
+    await this.draw();
+
+    const data = this.canvas.toDataURL();
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = 'poster.png';
+    link.setAttribute('crossorigin', 'anonymous');
+    link.click();
+  }
+
   private loadImage(src: string) {
     return new Promise<HTMLImageElement>((resolve) => {
       const image = new Image();
       image.addEventListener('load', () => resolve(image));
+      image.crossOrigin = 'anonymous';
       image.src = src;
     });
   }

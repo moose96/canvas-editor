@@ -75,6 +75,16 @@ export default function App() {
     await editorService.reset();
   };
 
+  const handleExport = async () => {
+    const editorService = await getEditorService();
+
+    if (!editorService) {
+      return;
+    }
+
+    editorService.export();
+  };
+
   return (
     <div className="flex gap-6 justify-center py-14">
       <canvas ref={canvasRef} className="w-[759px] h-[948px]" width={759} height={948}></canvas>
@@ -99,7 +109,7 @@ export default function App() {
         </div>
         <div className="flex flex-col gap-8">
           <Line />
-          <PrimaryButton label="Export to PNG" className="self-end w-max" />
+          <PrimaryButton label="Export to PNG" className="self-end w-max" onClick={handleExport} />
         </div>
       </div>
     </div>

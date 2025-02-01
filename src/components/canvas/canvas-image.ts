@@ -24,6 +24,7 @@ export default class CanvasImage extends CanvasControl {
         resolve();
       });
 
+      this.image.crossOrigin = 'anonymous';
       this.image.src = src;
     });
   }
