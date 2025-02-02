@@ -98,11 +98,16 @@ export default function App() {
   };
 
   return (
-    <div className="flex gap-6 justify-center py-14">
-      <canvas ref={canvasRef} className="w-[759px] h-[948px]" width={1080} height={1350}></canvas>
-      <div className="flex flex-col justify-between">
+    <div className={twMerge('flex gap-6 justify-center p-5 flex-col-reverse', 'xl:flex-row', 'sm:p-14')}>
+      <canvas
+        ref={canvasRef}
+        className={twMerge('w-full h-full max-w-[759px] max-h-[948px]', 'max-xl:self-center')}
+        width={1080}
+        height={1350}
+      ></canvas>
+      <div className="flex flex-col justify-between w-full @container">
         <div className="flex flex-col gap-8">
-          <div className="flex justify-between items-center">
+          <div className={twMerge('flex justify-between items-center gap-4', 'max-xl:flex-wrap')}>
             <div className="flex gap-2 items-center">
               <Logo className="w-16 h-16" />
               <h1 className="typography-display text-black-75">CanvasEditor</h1>
@@ -121,7 +126,7 @@ export default function App() {
           <div className="bg-white-97 rounded-[10px] px-4 py-6">
             <h2 className="typography-body-bold">Add content</h2>
           </div>
-          <div className="flex flex-wrap gap-x-[29px] gap-y-8 max-w-[759px]">
+          <div className="flex flex-wrap gap-x-[29px] gap-y-8 max-w-[759px] @max-[759px]:justify-center">
             <ActionButton icon={<Text />} label="Text" onClick={handleText} />
             <ActionButton icon={<Img />} label="Image" onClick={handleImage} />
             <ActionButton icon={<Background />} label="Background" onClick={handleBackground} />
@@ -129,7 +134,11 @@ export default function App() {
         </div>
         <div className="flex flex-col gap-8">
           <Line />
-          <PrimaryButton label="Export to PNG" className="self-end w-max" onClick={handleExport} />
+          <PrimaryButton
+            label="Export to PNG"
+            className={twMerge('self-end w-max', 'max-sm:w-full')}
+            onClick={handleExport}
+          />
         </div>
       </div>
       {modalElement}
