@@ -13,7 +13,7 @@ export default function TextButton({ label, icon, onClick, className = '', autoF
   return (
     <button
       className={twMerge(
-        'typography-body-medium flex gap-2 cursor-pointer h-max items-center rounded-[5px]',
+        'typography-body-medium flex gap-2 cursor-pointer h-max items-center rounded-[5px] transition-colors duration-250',
         'focus:focus-outline',
         className,
       )}

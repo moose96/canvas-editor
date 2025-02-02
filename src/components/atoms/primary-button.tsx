@@ -10,7 +10,7 @@ export default function PrimaryButton({ label, className, onClick }: PrimaryButt
   return (
     <button
       className={twMerge(
-        'rounded-[5px] bg-primary text-white px-8 py-2 typography-button cursor-pointer',
+        'rounded-[5px] bg-primary text-white px-8 py-2 typography-button cursor-pointer transition-colors duration-250',
         'hover:bg-[#550788]',
         'focus:focus-outline',
         'disabled:text-black-25',

@@ -11,7 +11,7 @@ export default function ActionButton({ icon, label, onClick }: ActionButtonProps
   return (
     <button
       className={twMerge(
-        'bg-white-97 p-3 rounded-[10px] relative flex items-center justify-center w-[365px] h-[256px] cursor-pointer',
+        'bg-white-97 p-3 rounded-[10px] relative flex items-center justify-center w-[365px] h-[256px] cursor-pointer transition-colors duration-250',
         'hover:bg-black-25',
         'focus:focus-outline',
         'disabled:text-black-25',
