@@ -1,18 +1,17 @@
+import Background from '@assets/icons/background.svg?react';
+import Img from '@assets/icons/img.svg?react';
+import Logo from '@assets/icons/logo.svg?react';
+import Reset from '@assets/icons/reset.svg?react';
+import Text from '@assets/icons/text.svg?react';
+import Line from '@components/atoms/line.tsx';
+import PrimaryButton from '@components/atoms/primary-button.tsx';
+import TextButton from '@components/atoms/text-button.tsx';
+import EditorService from '@components/canvas/editor-service.ts';
+import ActionButton from '@components/molecules/action-button.tsx';
+import RemoveAlert, { RemoveAlertAction } from '@components/organisms/remove-alert.tsx';
+import useModal from '@hooks/use-modal.tsx';
+import readImageFile from '@utility/read-image-file.ts';
 import { useEffect, useRef } from 'react';
-
-import Background from './assets/icons/background.svg?react';
-import Img from './assets/icons/img.svg?react';
-import Logo from './assets/icons/logo.svg?react';
-import Reset from './assets/icons/reset.svg?react';
-import Text from './assets/icons/text.svg?react';
-import Line from './components/atoms/line.tsx';
-import PrimaryButton from './components/atoms/primary-button.tsx';
-import TextButton from './components/atoms/text-button.tsx';
-import EditorService from './components/canvas/editor-service.ts';
-import ActionButton from './components/molecules/action-button.tsx';
-import RemoveAlert, { RemoveAlertAction } from './components/organisms/remove-alert.tsx';
-import useModal from './hooks/use-modal.tsx';
-import readImageFile from './utility/read-image-file.ts';
 
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

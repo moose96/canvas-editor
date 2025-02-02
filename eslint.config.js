@@ -7,7 +7,7 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
-const c = tseslint.config(
+export default tseslint.config(
   { ignores: ['dist'] },
   {
     extends: [
@@ -36,6 +36,13 @@ const c = tseslint.config(
       'import/first': 'error',
       'import/newline-after-import': 'error',
       'import/no-duplicates': 'error',
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: './tsconfig.app.json',
+        },
+      },
     },
   },
   {
@@ -71,7 +78,3 @@ const c = tseslint.config(
     },
   },
 );
-
-console.log(c);
-
-export default c;

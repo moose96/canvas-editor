@@ -1,8 +1,8 @@
+import Alert from '@assets/icons/alert.svg?react';
+import Close from '@assets/icons/close.svg?react';
 import { forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import Alert from '../../assets/icons/alert.svg?react';
-import Close from '../../assets/icons/close.svg?react';
 import PrimaryButton from '../atoms/primary-button.tsx';
 import TextButton from '../atoms/text-button.tsx';
 

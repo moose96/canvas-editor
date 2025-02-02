@@ -1,6 +1,5 @@
+import Observable from '@utility/observable.ts';
 import { ForwardRefExoticComponent, RefAttributes, useRef } from 'react';
-
-import Observable from '../utility/observable.ts';
 
 export interface ModalBaseProps<ActionType> extends RefAttributes<HTMLDialogElement> {
   onAction?: (action: ActionType) => void;

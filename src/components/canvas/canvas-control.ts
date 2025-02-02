@@ -8,7 +8,7 @@ export interface CanvasControlProps {
   height?: number;
   paddingX?: number;
   paddingY?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export default class CanvasControl extends EventTarget {

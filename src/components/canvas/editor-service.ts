@@ -1,6 +1,7 @@
-import placeholder from '../../assets/placeholder.webp?inline';
-import getThemeValue from '../../utility/get-theme-value.ts';
-import { containImage, coverTarget, ObjectFit } from '../../utility/object-fit.ts';
+import placeholder from '@assets/placeholder.webp?inline';
+import getThemeValue from '@utility/get-theme-value.ts';
+import { containImage, coverTarget, ObjectFit } from '@utility/object-fit.ts';
+
 import CanvasControl from './canvas-control.ts';
 import CanvasImage from './canvas-image.ts';
 import CanvasText from './canvas-text.ts';

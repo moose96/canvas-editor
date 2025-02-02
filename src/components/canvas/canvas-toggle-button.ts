@@ -1,5 +1,6 @@
-import fromEuclideanToPolar from '../../utility/from-euclidean-to-polar.ts';
-import getThemeValue from '../../utility/get-theme-value.ts';
+import fromEuclideanToPolar from '@utility/from-euclidean-to-polar.ts';
+import getThemeValue from '@utility/get-theme-value.ts';
+
 import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
 import EventManager from './event-manager.ts';
 

@@ -1,7 +1,8 @@
-import deleteIcon from '../../assets/icons/delete.svg?raw';
-import moveIcon from '../../assets/icons/move.svg?raw';
-import fromEuclideanToPolar from '../../utility/from-euclidean-to-polar.ts';
-import getThemeValue from '../../utility/get-theme-value.ts';
+import deleteIcon from '@assets/icons/delete.svg?raw';
+import moveIcon from '@assets/icons/move.svg?raw';
+import fromEuclideanToPolar from '@utility/from-euclidean-to-polar.ts';
+import getThemeValue from '@utility/get-theme-value.ts';
+
 import CanvasButton from './canvas-button.ts';
 import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
 import CanvasIcon from './canvas-icon.ts';
