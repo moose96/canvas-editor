@@ -3,9 +3,13 @@
 This is a creator of posters. Available features:
 
 ✨ Add background from disk
+
 ✨ Add image from disk and customize its size and position
+
 ✨ Add text and customize the color, position and available area of the text
+
 ✨ Download PNG image (1080px by 1350px)
+
 ✨ Not satisfied of your poster? Reset and start again!
 
 $${\color{magenta}Live \space Demo:}$$ [GitHub Pages](https://moose96.github.io/canvas-editor/)
@@ -17,6 +21,7 @@ $${\color{magenta}Live \space Demo:}$$ [GitHub Pages](https://moose96.github.io/
 ### Web vitals
 
 🚀 Ultra fast (0.4s Speed Index, LCP and FCP)
+
 🚀 344kB bundle size
 
 ![web vitals](docs/assets/web-vitals.png)
