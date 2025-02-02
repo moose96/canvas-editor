@@ -1,15 +1,13 @@
-import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
-import EventManager from './event-manager.ts';
-import TransformBox from './transform-box.ts';
+import { IEditable } from '@components/canvas/editable.ts';
+import { NCC } from '@utility/relative-numbers.ts';
 
-const initialWidth = 300;
+import CanvasControl from './canvas-control.ts';
+import TransformBox from './transform-box/transform-box.ts';
 
-export default class CanvasImage extends CanvasControl {
+const initialWidth = NCC`${300}`;
+
+export default class CanvasImage extends CanvasControl implements IEditable {
   private image?: HTMLImageElement;
-
-  constructor(context: CanvasRenderingContext2D, eventManager: EventManager, props: CanvasControlProps) {
-    super(context, eventManager, props);
-  }
 
   async setImage(src: string) {
     return new Promise<void>((resolve) => {
@@ -23,7 +21,7 @@ export default class CanvasImage extends CanvasControl {
         const aspectRatio = this.image.width / this.image.height;
 
         this.width = initialWidth;
-        this.height = initialWidth / aspectRatio;
+        this.height = NCC`${initialWidth / aspectRatio}`;
 
         resolve();
       });
@@ -36,7 +34,7 @@ export default class CanvasImage extends CanvasControl {
   setEditable(editable: boolean) {
     if (editable) {
       this.children.push(
-        new TransformBox(this.context, this.eventManager, {
+        new TransformBox(this.context, this.converter, this.eventManager, {
           x: this.x,
           y: this.y,
           width: this.width,

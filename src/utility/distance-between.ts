@@ -1,6 +1,6 @@
-export interface Point2D {
-  x: number;
-  y: number;
+export interface Point2D<T extends number = number> {
+  x: T;
+  y: T;
 }
 
 export default function distanceBetween(a: Point2D, b: Point2D) {

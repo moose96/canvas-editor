@@ -1,5 +1,6 @@
 import fromEuclideanToPolar from '@utility/from-euclidean-to-polar.ts';
 import getThemeValue from '@utility/get-theme-value.ts';
+import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
 import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
 import EventManager from './event-manager.ts';
@@ -12,8 +13,13 @@ export default class CanvasToggleButton extends CanvasControl {
   public value = false;
   public name: string;
 
-  constructor(context: CanvasRenderingContext2D, eventManager: EventManager, props?: CanvasToggleButtonProps) {
-    super(context, eventManager, props);
+  constructor(
+    context: CanvasRenderingContext2D,
+    converter: RelativeNumbersConverter,
+    eventManager: EventManager,
+    props?: CanvasToggleButtonProps,
+  ) {
+    super(context, converter, eventManager, props);
 
     this.name = props?.name ?? '';
     this.addEventListener('click', this.handleClick.bind(this));

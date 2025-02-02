@@ -1,3 +1,6 @@
+import { NC, NumberCanvasContext } from '@utility/relative-numbers.ts';
+import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
+
 import distanceBetween, { Point2D } from '../../utility/distance-between.ts';
 import fromEuclideanToPolar from '../../utility/from-euclidean-to-polar.ts';
 import CanvasControl from './canvas-control.ts';
@@ -10,7 +13,10 @@ export enum CollisionShape {
 export default class EventManager {
   private controls: Set<CanvasControl> = new Set();
 
-  constructor(public canvas: HTMLCanvasElement) {
+  constructor(
+    public canvas: HTMLCanvasElement,
+    private converter: RelativeNumbersConverter,
+  ) {
     this.canvas.addEventListener('click', this.handleEvent.bind(this));
     this.canvas.addEventListener('pointerdown', this.handleEvent.bind(this));
     this.canvas.addEventListener('pointerup', this.handleEvent.bind(this));
@@ -26,13 +32,16 @@ export default class EventManager {
   }
 
   private handleEvent(event: MouseEvent | PointerEvent) {
-    const pointer = { x: event.offsetX, y: event.offsetY };
+    const pointer = {
+      x: this.converter.fromCanvasToCanvasContext(NC`${event.offsetX}`),
+      y: this.converter.fromCanvasToCanvasContext(NC`${event.offsetY}`),
+    };
     for (const control of this.checkCollisions(pointer)) {
       control.dispatchEvent(new Event(event.type));
     }
   }
 
-  private *checkCollisions(pointer: Point2D) {
+  private *checkCollisions(pointer: Point2D<NumberCanvasContext>) {
     for (const control of this.controls) {
       switch (control.collisionShape) {
         case CollisionShape.Circle:
@@ -49,14 +58,14 @@ export default class EventManager {
     }
   }
 
-  private checkCircleCollisions(control: CanvasControl, pointer: Point2D) {
+  private checkCircleCollisions(control: CanvasControl, pointer: Point2D<NumberCanvasContext>) {
     const { x, y, radius } = fromEuclideanToPolar(control.x, control.y, control.width, control.height);
     const distance = distanceBetween(pointer, { x, y });
 
     return distance < radius;
   }
 
-  private checkRectangleCollisions(control: CanvasControl, pointer: Point2D) {
+  private checkRectangleCollisions(control: CanvasControl, pointer: Point2D<NumberCanvasContext>) {
     const boundary = control.boundary;
     return (
       pointer.x >= boundary.left &&

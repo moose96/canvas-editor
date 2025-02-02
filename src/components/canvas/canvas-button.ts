@@ -1,13 +1,20 @@
 import center from '@utility/center.ts';
 import fromEuclideanToPolar from '@utility/from-euclidean-to-polar.ts';
 import getThemeValue from '@utility/get-theme-value.ts';
+import { NCC } from '@utility/relative-numbers.ts';
+import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
 import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
 import EventManager from './event-manager.ts';
 
 export default class CanvasButton extends CanvasControl {
-  constructor(context: CanvasRenderingContext2D, eventManager: EventManager, props?: CanvasControlProps) {
-    super(context, eventManager, props);
+  constructor(
+    context: CanvasRenderingContext2D,
+    converter: RelativeNumbersConverter,
+    eventManager: EventManager,
+    props?: CanvasControlProps,
+  ) {
+    super(context, converter, eventManager, props);
 
     this.addEventListener('created', this.handleCreated.bind(this));
   }
@@ -30,8 +37,8 @@ export default class CanvasButton extends CanvasControl {
 
       const { x, y } = center(this, child.width, child.height);
 
-      child.x = x;
-      child.y = y;
+      child.x = NCC`${x}`;
+      child.y = NCC`${y}`;
     }
   }
 }

@@ -1,14 +1,22 @@
+import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
+
 import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
 import EventManager from './event-manager.ts';
 
-interface CanvasControlConstructor<Props extends CanvasControlProps, Return extends CanvasControl> {
-  new (context: CanvasRenderingContext2D, eventManager: EventManager, props?: Props): Return;
+export interface CanvasControlConstructor<Props extends CanvasControlProps, Return extends CanvasControl> {
+  new (
+    context: CanvasRenderingContext2D,
+    converter: RelativeNumbersConverter,
+    eventManager: EventManager,
+    props?: Props,
+  ): Return;
   prototype: CanvasControl;
 }
 
 export default class CanvasControlFactory {
   constructor(
     private context: CanvasRenderingContext2D,
+    private converter: RelativeNumbersConverter,
     private eventManager: EventManager,
   ) {}
 
@@ -17,7 +25,7 @@ export default class CanvasControlFactory {
     props?: Props,
     children?: CanvasControl['children'],
   ) {
-    const instance = new control(this.context, this.eventManager, props);
+    const instance = new control(this.context, this.converter, this.eventManager, props);
 
     if (children) {
       instance.children = children;

@@ -12,6 +12,7 @@ import RemoveAlert, { RemoveAlertAction } from '@components/organisms/remove-ale
 import useModal from '@hooks/use-modal.tsx';
 import readImageFile from '@utility/read-image-file.ts';
 import { useEffect, useRef } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -98,7 +99,7 @@ export default function App() {
 
   return (
     <div className="flex gap-6 justify-center py-14">
-      <canvas ref={canvasRef} className="w-[759px] h-[948px]" width={759} height={948}></canvas>
+      <canvas ref={canvasRef} className="w-[759px] h-[948px]" width={1080} height={1350}></canvas>
       <div className="flex flex-col justify-between">
         <div className="flex flex-col gap-8">
           <div className="flex justify-between items-center">
@@ -106,7 +107,15 @@ export default function App() {
               <Logo className="w-16 h-16" />
               <h1 className="typography-display text-black-75">CanvasEditor</h1>
             </div>
-            <TextButton className="text-red border-b border-red" label="Reset" icon={<Reset />} onClick={handleReset} />
+            <TextButton
+              className={twMerge(
+                'text-red relative',
+                'after:absolute after:left-0 after:-bottom-[1px] after:w-full after:h-[1px] after:bg-red',
+              )}
+              label="Reset"
+              icon={<Reset />}
+              onClick={handleReset}
+            />
           </div>
           <Line />
           <div className="bg-white-97 rounded-[10px] px-4 py-6">

@@ -1,5 +1,7 @@
 import fromEuclideanToPolar from '@utility/from-euclidean-to-polar.ts';
 import getThemeValue from '@utility/get-theme-value.ts';
+import { NC, NCC, NumberCanvasContext } from '@utility/relative-numbers.ts';
+import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
 import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
 import CanvasToggleButton from './canvas-toggle-button.ts';
@@ -8,8 +10,13 @@ import EventManager from './event-manager.ts';
 export default class TextColorPicker extends CanvasControl {
   public value?: string;
 
-  constructor(context: CanvasRenderingContext2D, eventManager: EventManager, props?: CanvasControlProps) {
-    super(context, eventManager, props);
+  constructor(
+    context: CanvasRenderingContext2D,
+    converter: RelativeNumbersConverter,
+    eventManager: EventManager,
+    props?: CanvasControlProps,
+  ) {
+    super(context, converter, eventManager, props);
 
     this.children = [
       this.createButton(getThemeValue('--color-black-100'), 0),
@@ -21,14 +28,28 @@ export default class TextColorPicker extends CanvasControl {
   }
 
   private createButton(color: string, index: number) {
-    const gap = 4;
+    const gap = NC`4`;
 
     const button = this.factory.create(
       CanvasToggleButton,
-      { name: color, x: this.x + index * (24 + gap), y: this.y, width: 24, height: 24 },
+      {
+        name: color,
+        x: (this.x + index * this.converter.fromCanvasToCanvasContext(NC`${24 + gap}`)) as NumberCanvasContext,
+        y: this.y,
+        width: this.converter.fromCanvasToCanvasContext(NC`${24}`),
+        height: this.converter.fromCanvasToCanvasContext(NC`${24}`),
+      },
       [
         (control) => {
-          const { x, y, radius } = fromEuclideanToPolar(control.x + 4, control.y + 4, 16, 16);
+          const childWidth = this.converter.fromCanvasToCanvasContext(NC`16`);
+          const halfWidth = NCC`${(control.width - childWidth) / 2}`;
+
+          const { x, y, radius } = fromEuclideanToPolar(
+            control.x + halfWidth,
+            control.y + halfWidth,
+            childWidth,
+            childWidth,
+          );
           this.context.fillStyle = color;
           this.context.beginPath();
           this.context.arc(x, y, radius, 0, 2 * Math.PI);

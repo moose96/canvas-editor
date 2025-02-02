@@ -1,20 +1,30 @@
+import { IEditable } from '@components/canvas/editable.ts';
+import createFontProperty from '@utility/create-font-property.ts';
+import { NC, NCC, NumberCanvasContext } from '@utility/relative-numbers.ts';
+import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
+
 import CanvasTextControl, { CanvasTextControlProps } from './canvas-text-control.ts';
 import CanvasTextarea from './canvas-textarea.ts';
 import EventManager from './event-manager.ts';
 import TextColorPicker from './text-color-picker.ts';
-import TransformBox from './transform-box.ts';
+import TransformBox from './transform-box/transform-box.ts';
 
-export default class CanvasText extends CanvasTextControl {
+export default class CanvasText extends CanvasTextControl implements IEditable {
   private isEditable: boolean = false;
   private content: string[][] = [];
   private input: CanvasTextarea;
   private transformBox?: TransformBox;
   private textColorPicker?: TextColorPicker;
 
-  constructor(context: CanvasRenderingContext2D, eventManager: EventManager, props: CanvasTextControlProps) {
-    super(context, eventManager, props);
+  constructor(
+    context: CanvasRenderingContext2D,
+    converter: RelativeNumbersConverter,
+    eventManager: EventManager,
+    props: CanvasTextControlProps,
+  ) {
+    super(context, converter, eventManager, props);
 
-    this.context.font = `${this.fontWeight} ${this.fontSize}/${this.lineHeight} ${this.fontFamily}`;
+    this.context.font = createFontProperty(this.fontFamily, this.fontSize, this.lineHeight, this.fontWeight);
     this.context.textAlign = 'center';
     this.context.textBaseline = 'top';
 
@@ -40,7 +50,7 @@ export default class CanvasText extends CanvasTextControl {
 
       this.textColorPicker = this.factory.create(TextColorPicker, {
         x: this.x,
-        y: this.transformBox.boundary.bottom + 8,
+        y: NCC`${this.transformBox.boundary.bottom + this.converter.fromCanvasToCanvasContext(NC`8`)}`,
       });
       this.textColorPicker.addEventListener('change', async (event) => {
         if (event.target && event.target instanceof TextColorPicker && event.target.value) {
@@ -51,14 +61,14 @@ export default class CanvasText extends CanvasTextControl {
       });
 
       this.transformBox.children.push(this.textColorPicker);
-      this.transformBox.addEventListener('transformstart', this.handleTransformStart);
+      this.addEventListener('transformstart', this.handleTransformStart);
 
       this.children.push(this.transformBox);
       this.input.show();
       this.isEditable = true;
     } else {
       this.content = this.fitText(this.input.value);
-      this.transformBox?.removeEventListener('transformstart', this.handleTransformStart);
+      this.removeEventListener('transformstart', this.handleTransformStart);
       this.children.length = 0;
       this.input.hide();
       this.isEditable = false;
@@ -73,7 +83,11 @@ export default class CanvasText extends CanvasTextControl {
         const line = this.content[i];
         const text = line.join(' ');
         const textMetrics = this.context.measureText(text);
-        const y = this.y + this.paddingY + textMetrics.fontBoundingBoxAscent + i * parseInt(this.lineHeight);
+        const y =
+          this.y +
+          this.paddingY +
+          textMetrics.fontBoundingBoxAscent +
+          i * this.converter.fromCanvasToCanvasContext(this.lineHeight);
 
         if (y >= this.boundary.bottom) {
           break;
@@ -86,17 +100,17 @@ export default class CanvasText extends CanvasTextControl {
     await super.draw();
   }
 
-  override move(deltaX: number, deltaY: number) {
+  override move(deltaX: NumberCanvasContext, deltaY: NumberCanvasContext) {
     super.move(deltaX, deltaY);
     this.input.move(deltaX, deltaY);
   }
 
-  override resize(deltaWidth: number, deltaHeight: number) {
+  override resize(deltaWidth: NumberCanvasContext, deltaHeight: NumberCanvasContext) {
     super.resize(deltaWidth, deltaHeight);
     this.input.resize(deltaWidth, deltaHeight);
 
     if (this.transformBox && this.textColorPicker) {
-      this.textColorPicker.move(0, deltaHeight);
+      this.textColorPicker.move(NCC`0`, deltaHeight);
     }
   }
 

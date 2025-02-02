@@ -1,6 +1,9 @@
 import placeholder from '@assets/placeholder.webp?inline';
+import { isEditable } from '@components/canvas/editable.ts';
 import getThemeValue from '@utility/get-theme-value.ts';
 import { containImage, coverTarget, ObjectFit } from '@utility/object-fit.ts';
+import { NC } from '@utility/relative-numbers.ts';
+import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
 import CanvasControl from './canvas-control.ts';
 import CanvasImage from './canvas-image.ts';
@@ -13,6 +16,7 @@ export default class EditorService {
   private placeholder?: HTMLImageElement;
   private background?: HTMLImageElement;
   private controls: Set<CanvasControl> = new Set();
+  private readonly converter: RelativeNumbersConverter;
   private readonly eventManager: EventManager;
 
   private constructor(private canvas: HTMLCanvasElement) {
@@ -23,7 +27,8 @@ export default class EditorService {
     }
 
     this.context = context;
-    this.eventManager = new EventManager(this.canvas);
+    this.converter = new RelativeNumbersConverter(this.canvas);
+    this.eventManager = new EventManager(this.canvas, this.converter);
   }
 
   drawEmptyBackground() {
@@ -34,9 +39,9 @@ export default class EditorService {
   async addImage(src: string) {
     this.isEditing = true;
 
-    const img = new CanvasImage(this.context, this.eventManager, {
-      x: 200,
-      y: 200,
+    const img = new CanvasImage(this.context, this.converter, this.eventManager, {
+      x: this.converter.fromCanvasToCanvasContext(NC`200`),
+      y: this.converter.fromCanvasToCanvasContext(NC`200`),
     });
     await img.setImage(src);
     img.setEditable(true);
@@ -58,18 +63,18 @@ export default class EditorService {
   async addText() {
     this.isEditing = true;
 
-    const text = new CanvasText(this.context, this.eventManager, {
+    const text = new CanvasText(this.context, this.converter, this.eventManager, {
       fontFamily: 'Poppins, sans-serif',
-      fontSize: '32px',
-      lineHeight: '48px',
+      fontSize: NC`${32}`,
+      lineHeight: NC`${48}`,
       fontWeight: '700',
       color: getThemeValue('--color-black-75'),
-      x: 200,
-      y: 200,
-      width: 350,
-      height: 120,
-      paddingX: 24,
-      paddingY: 12,
+      x: this.converter.fromCanvasToCanvasContext(NC`${200}`),
+      y: this.converter.fromCanvasToCanvasContext(NC`${200}`),
+      width: this.converter.fromCanvasToCanvasContext(NC`${350}`),
+      height: this.converter.fromCanvasToCanvasContext(NC`${120}`),
+      paddingX: this.converter.fromCanvasToCanvasContext(NC`${24}`),
+      paddingY: this.converter.fromCanvasToCanvasContext(NC`${12}`),
     });
     text.setEditable(true);
     text.addEventListener(
@@ -122,7 +127,7 @@ export default class EditorService {
 
   async export() {
     this.controls.forEach((control) => {
-      if ('setEditable' in control) {
+      if (isEditable(control)) {
         control.setEditable(false);
       }
     });
