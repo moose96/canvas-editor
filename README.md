@@ -1,50 +1,80 @@
-# React + TypeScript + Vite
+# CanvasEditor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a creator of posters. Available features:
 
-Currently, two official plugins are available:
+✨ Add background from disk
+✨ Add image from disk and customize its size and position
+✨ Add text and customize the color, position and available area of the text
+✨ Download PNG image (1080px by 1350px)
+✨ Not satisfied of your poster? Reset and start again!
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+$${\color{magenta}Live \space Demo:}$$ [GitHub Pages](https://moose96.github.io/canvas-editor/)
 
-## Expanding the ESLint configuration
+### Video presentation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+*TODO*
 
-- Configure the top-level `parserOptions` property like this:
+### Web vitals
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+🚀 Ultra fast (0.4s Speed Index, LCP and FCP)
+🚀 344kB bundle size
+
+![web vitals](docs/assets/web-vitals.png)
+
+![bundle size](docs/assets/bundle-size.png)
+
+## Setup
+
+### Prerequisites
+
+- Node.js v22.13.1
+- pnpm v9.x
+
+Install fresh packages:
+
+```bash
+pnpm i --frozen-lockfile
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Running
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Dev server
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+pnpm dev
 ```
+
+### Building for production and running production server
+
+```bash
+pnpm build
+pnpm preview
+```
+
+Application will be built in `dist` directory.
+
+### Testing
+
+```bash
+pnpm test
+```
+
+## Deploy
+
+This repository is configured with Continuous Deployment strategy, that means that every time you push changes to `main` branch,
+GitHub Pages will be deployed.
+
+## Tech stack
+
+- [React.js 18](https://react.dev/)
+- [Tailwind 4.x](https://tailwindcss.com/)
+- [Canvg](https://canvg.js.org/) - for drawing SVG files on canvas
+- [TypeScript](https://www.typescriptlang.org/docs/)
+
+### Dev stack
+
+- [Vite](https://vite.dev/config/)
+- [Vitest](https://vitest.dev/config/)
+- [Eslint](https://eslint.org/docs/latest/)
+- [Prettier](https://prettier.io/docs/)
+- [SVGR](https://react-svgr.com/docs/options/) - loading SVG files as React components
