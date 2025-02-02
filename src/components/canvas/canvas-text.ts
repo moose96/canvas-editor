@@ -1,5 +1,6 @@
 import { IEditable } from '@components/canvas/editable.ts';
 import createFontProperty from '@utility/create-font-property.ts';
+import getThemeValue from '@utility/get-theme-value.ts';
 import { NC, NCC, NumberCanvasContext } from '@utility/relative-numbers.ts';
 import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
@@ -59,6 +60,7 @@ export default class CanvasText extends CanvasTextControl implements IEditable {
           this.dispatchEvent(new Event('change'));
         }
       });
+      this.textColorPicker.setValue(getThemeValue('--color-black-100'));
 
       this.transformBox.children.push(this.textColorPicker);
       this.addEventListener('transformstart', this.handleTransformStart);

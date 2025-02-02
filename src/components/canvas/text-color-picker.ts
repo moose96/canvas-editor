@@ -27,6 +27,16 @@ export default class TextColorPicker extends CanvasControl {
     ];
   }
 
+  setValue(value: string) {
+    this.children.forEach((child) => {
+      if (child instanceof CanvasToggleButton) {
+        child.value = child.name === value;
+      }
+    });
+    this.value = value;
+    this.dispatchEvent(new Event('change'));
+  }
+
   private createButton(color: string, index: number) {
     const gap = NC`4`;
 
@@ -66,14 +76,7 @@ export default class TextColorPicker extends CanvasControl {
 
   private handleClick(event: Event) {
     if (event.target && event.target instanceof CanvasToggleButton) {
-      this.children.forEach((child) => {
-        if (child instanceof CanvasToggleButton) {
-          child.value = false;
-        }
-      });
-      event.target.value = true;
-      this.value = event.target.name;
-      this.dispatchEvent(new Event('change'));
+      this.setValue(event.target.name);
     }
   }
 }

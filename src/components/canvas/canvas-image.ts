@@ -1,5 +1,5 @@
 import { IEditable } from '@components/canvas/editable.ts';
-import { NCC } from '@utility/relative-numbers.ts';
+import { NCC, NumberCanvasContext } from '@utility/relative-numbers.ts';
 
 import CanvasControl from './canvas-control.ts';
 import TransformBox from './transform-box/transform-box.ts';
@@ -8,6 +8,7 @@ const initialWidth = NCC`${300}`;
 
 export default class CanvasImage extends CanvasControl implements IEditable {
   private image?: HTMLImageElement;
+  private aspectRatio: number = 1;
 
   async setImage(src: string) {
     return new Promise<void>((resolve) => {
@@ -18,10 +19,10 @@ export default class CanvasImage extends CanvasControl implements IEditable {
           return;
         }
 
-        const aspectRatio = this.image.width / this.image.height;
+        this.aspectRatio = this.image.width / this.image.height;
 
         this.width = initialWidth;
-        this.height = NCC`${initialWidth / aspectRatio}`;
+        this.height = NCC`${initialWidth / this.aspectRatio}`;
 
         resolve();
       });
@@ -54,5 +55,11 @@ export default class CanvasImage extends CanvasControl implements IEditable {
 
     this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
     await super.draw();
+  }
+
+  override resize(deltaWidth: NumberCanvasContext, deltaHeight: NumberCanvasContext) {
+    super.resize(deltaWidth, deltaHeight);
+    const newHeight = this.width / this.aspectRatio;
+    super.resize(NCC`0`, NCC`${newHeight - this.height}`);
   }
 }
