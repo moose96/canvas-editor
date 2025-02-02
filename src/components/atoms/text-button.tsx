@@ -7,9 +7,10 @@ export interface TextButtonProps {
   onClick?: () => void;
   className?: string;
   autoFocus?: boolean;
+  ariaLabel?: string;
 }
 
-export default function TextButton({ label, icon, onClick, className = '', autoFocus }: TextButtonProps) {
+export default function TextButton({ label, icon, onClick, className = '', autoFocus, ariaLabel }: TextButtonProps) {
   return (
     <button
       className={twMerge(
@@ -19,6 +20,7 @@ export default function TextButton({ label, icon, onClick, className = '', autoF
       )}
       onClick={onClick}
       autoFocus={autoFocus}
+      aria-label={ariaLabel}
     >
       {label && <span>{label}</span>}
       {icon}

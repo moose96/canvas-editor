@@ -14,4 +14,9 @@ export default defineConfig({
     tailwindcss(),
     svgr({ svgrOptions: { titleProp: true, svgProps: { className: 'icon' } } }),
   ],
+  test: {
+    environment: 'happy-dom',
+    setupFiles: ['./vitest.setup.ts'],
+    clearMocks: true,
+  },
 });
