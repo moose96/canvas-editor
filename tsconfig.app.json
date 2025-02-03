@@ -30,5 +30,5 @@
       "@utility/*": ["./src/utility/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
 }
