@@ -1,5 +1,6 @@
+import { Axis } from '@models/axis.ts';
 import { NC, NCC } from '@utility/relative-numbers.ts';
-import RelativeNumbersConverter, { Axis } from '@utility/relative-numbers-converter.ts';
+import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 let converter: RelativeNumbersConverter;
