@@ -1,7 +1,7 @@
-import { IEditable } from '@components/canvas/editable.ts';
+import { IEditable } from '@components/canvas/models/editable.ts';
 import { NCC, NumberCanvasContext } from '@utility/relative-numbers.ts';
 
-import CanvasControl from './canvas-control.ts';
+import CanvasControl from '../models/canvas-control.ts';
 import TransformBox from './transform-box/transform-box.ts';
 
 const initialWidth = NCC`${300}`;

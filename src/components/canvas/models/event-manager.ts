@@ -1,8 +1,9 @@
+import { Point2D } from '@models/point-2d.ts';
+import distanceBetween from '@utility/distance-between.ts';
+import fromEuclideanToPolar from '@utility/from-euclidean-to-polar.ts';
 import { NC, NumberCanvasContext } from '@utility/relative-numbers.ts';
 import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
-import distanceBetween, { Point2D } from '../../utility/distance-between.ts';
-import fromEuclideanToPolar from '../../utility/from-euclidean-to-polar.ts';
 import CanvasControl from './canvas-control.ts';
 
 export enum CollisionShape {

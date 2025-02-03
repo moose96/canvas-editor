@@ -1,12 +1,12 @@
-import { IEditable } from '@components/canvas/editable.ts';
+import { IEditable } from '@components/canvas/models/editable.ts';
 import createFontProperty from '@utility/create-font-property.ts';
 import getThemeValue from '@utility/get-theme-value.ts';
 import { NC, NCC, NumberCanvasContext } from '@utility/relative-numbers.ts';
 import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
-import CanvasTextControl, { CanvasTextControlProps } from './canvas-text-control.ts';
+import CanvasTextControl, { CanvasTextControlProps } from '../models/canvas-text-control.ts';
+import EventManager from '../models/event-manager.ts';
 import CanvasTextarea from './canvas-textarea.ts';
-import EventManager from './event-manager.ts';
 import TextColorPicker from './text-color-picker.ts';
 import TransformBox from './transform-box/transform-box.ts';
 

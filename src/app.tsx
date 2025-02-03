@@ -6,7 +6,7 @@ import Text from '@assets/icons/text.svg?react';
 import Line from '@components/atoms/line.tsx';
 import PrimaryButton from '@components/atoms/primary-button.tsx';
 import TextButton from '@components/atoms/text-button.tsx';
-import EditorService from '@components/canvas/editor-service.ts';
+import EditorService from '@components/canvas/models/editor-service.ts';
 import ActionButton from '@components/molecules/action-button.tsx';
 import RemoveAlert, { RemoveAlertAction } from '@components/organisms/remove-alert.tsx';
 import useModal from '@hooks/use-modal.tsx';
@@ -36,65 +36,35 @@ export default function App() {
   }, []);
 
   const handleText = async () => {
-    const editorService = await getEditorService();
-
-    if (!editorService) {
-      return;
-    }
-
-    await editorService.addText();
+    await (await getEditorService())?.addText();
   };
 
   const handleImage = async () => {
-    const editorService = await getEditorService();
-
-    if (!editorService) {
-      return;
-    }
-
     const file = await readImageFile();
 
     if (file) {
-      await editorService.addImage(file);
+      await (await getEditorService())?.addImage(file);
     }
   };
 
   const handleBackground = async () => {
-    const editorService = await getEditorService();
-
-    if (!editorService) {
-      return;
-    }
-
     const file = await readImageFile();
 
     if (file) {
-      await editorService.setBackground(file);
+      await (await getEditorService())?.setBackground(file);
     }
   };
 
   const handleReset = async () => {
-    const editorService = await getEditorService();
-
-    if (!editorService) {
-      return;
-    }
-
     const actionType = await openModal();
 
     if (actionType === RemoveAlertAction.Reset) {
-      await editorService.reset();
+      await (await getEditorService())?.reset();
     }
   };
 
   const handleExport = async () => {
-    const editorService = await getEditorService();
-
-    if (!editorService) {
-      return;
-    }
-
-    await editorService.export();
+    await (await getEditorService())?.export();
   };
 
   return (

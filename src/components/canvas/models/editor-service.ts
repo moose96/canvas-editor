@@ -1,13 +1,13 @@
 import placeholder from '@assets/placeholder.webp?inline';
-import { isEditable } from '@components/canvas/editable.ts';
+import { isEditable } from '@components/canvas/models/editable.ts';
 import getThemeValue from '@utility/get-theme-value.ts';
 import { containImage, coverTarget, ObjectFit } from '@utility/object-fit.ts';
 import { NC } from '@utility/relative-numbers.ts';
 import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
+import CanvasImage from '../components/canvas-image.ts';
+import CanvasText from '../components/canvas-text.ts';
 import CanvasControl from './canvas-control.ts';
-import CanvasImage from './canvas-image.ts';
-import CanvasText from './canvas-text.ts';
 import EventManager from './event-manager.ts';
 
 export default class EditorService {

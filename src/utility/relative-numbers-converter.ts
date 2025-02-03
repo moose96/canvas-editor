@@ -1,9 +1,5 @@
+import { Axis } from '@models/axis.ts';
 import { NC, NCC, NumberCanvas, NumberCanvasContext, NumberViewport, NV } from '@utility/relative-numbers.ts';
-
-export enum Axis {
-  X,
-  Y,
-}
 
 export default class RelativeNumbersConverter {
   private readonly scale: number;

@@ -1,8 +1,8 @@
 import moveIcon from '@assets/icons/move.svg?raw';
-import CanvasButton from '@components/canvas/canvas-button.ts';
-import CanvasControl, { CanvasControlProps } from '@components/canvas/canvas-control.ts';
-import CanvasIcon from '@components/canvas/canvas-icon.ts';
-import EventManager from '@components/canvas/event-manager.ts';
+import CanvasButton from '@components/canvas/components/canvas-button.ts';
+import CanvasIcon from '@components/canvas/components/canvas-icon.ts';
+import CanvasControl, { CanvasControlProps } from '@components/canvas/models/canvas-control.ts';
+import EventManager from '@components/canvas/models/event-manager.ts';
 import getThemeValue from '@utility/get-theme-value.ts';
 import { NC, NCC } from '@utility/relative-numbers.ts';
 import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';

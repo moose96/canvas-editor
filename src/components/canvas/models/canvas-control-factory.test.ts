@@ -1,5 +1,5 @@
-import CanvasControl from '@components/canvas/canvas-control.ts';
-import CanvasControlFactory from '@components/canvas/canvas-control-factory.ts';
+import CanvasControl from '@components/canvas/models/canvas-control.ts';
+import CanvasControlFactory from '@components/canvas/models/canvas-control-factory.ts';
 import mockCanvasControlDeps from '@utility/mock-canvas-control-deps.ts';
 import { NCC } from '@utility/relative-numbers.ts';
 import { describe, expect, it } from 'vitest';

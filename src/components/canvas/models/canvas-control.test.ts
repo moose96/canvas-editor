@@ -1,5 +1,5 @@
-import CanvasControl from '@components/canvas/canvas-control.ts';
-import { CollisionShape } from '@components/canvas/event-manager.ts';
+import CanvasControl from '@components/canvas/models/canvas-control.ts';
+import { CollisionShape } from '@components/canvas/models/event-manager.ts';
 import mockCanvasControlDeps from '@utility/mock-canvas-control-deps.ts';
 import { NCC } from '@utility/relative-numbers.ts';
 import { beforeEach, describe, expect, it, vi } from 'vitest';

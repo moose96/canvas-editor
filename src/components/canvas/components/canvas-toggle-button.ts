@@ -2,8 +2,8 @@ import fromEuclideanToPolar from '@utility/from-euclidean-to-polar.ts';
 import getThemeValue from '@utility/get-theme-value.ts';
 import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
-import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
-import EventManager from './event-manager.ts';
+import CanvasControl, { CanvasControlProps } from '../models/canvas-control.ts';
+import EventManager from '../models/event-manager.ts';
 
 export interface CanvasToggleButtonProps extends CanvasControlProps {
   name: string;

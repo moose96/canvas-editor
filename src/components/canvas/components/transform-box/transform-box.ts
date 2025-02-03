@@ -1,12 +1,12 @@
-import DeleteButton from '@components/canvas/transform-box/delete-button.ts';
-import MoveButton from '@components/canvas/transform-box/move-button.ts';
-import ResizeButton from '@components/canvas/transform-box/resize-button.ts';
+import DeleteButton from '@components/canvas/components/transform-box/delete-button.ts';
+import MoveButton from '@components/canvas/components/transform-box/move-button.ts';
+import ResizeButton from '@components/canvas/components/transform-box/resize-button.ts';
 import getThemeValue from '@utility/get-theme-value.ts';
 import { NCC, NumberCanvasContext } from '@utility/relative-numbers.ts';
 import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
-import CanvasControl, { CanvasControlProps } from '../canvas-control.ts';
-import EventManager from '../event-manager.ts';
+import CanvasControl, { CanvasControlProps } from '../../models/canvas-control.ts';
+import EventManager from '../../models/event-manager.ts';
 
 export interface TransformBoxProps extends CanvasControlProps {
   controls?: CanvasControl;

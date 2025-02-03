@@ -3,9 +3,9 @@ import getThemeValue from '@utility/get-theme-value.ts';
 import { NC, NCC, NumberCanvasContext } from '@utility/relative-numbers.ts';
 import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
-import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
+import CanvasControl, { CanvasControlProps } from '../models/canvas-control.ts';
+import EventManager from '../models/event-manager.ts';
 import CanvasToggleButton from './canvas-toggle-button.ts';
-import EventManager from './event-manager.ts';
 
 export default class TextColorPicker extends CanvasControl {
   public value?: string;

@@ -1,9 +1,10 @@
+import { Axis } from '@models/axis.ts';
 import createFontProperty from '@utility/create-font-property.ts';
 import { NumberCanvasContext } from '@utility/relative-numbers.ts';
-import RelativeNumbersConverter, { Axis } from '@utility/relative-numbers-converter.ts';
+import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
-import CanvasTextControl, { CanvasTextControlProps } from './canvas-text-control.ts';
-import EventManager from './event-manager.ts';
+import CanvasTextControl, { CanvasTextControlProps } from '../models/canvas-text-control.ts';
+import EventManager from '../models/event-manager.ts';
 
 export default class CanvasTextarea extends CanvasTextControl {
   public visible = false;

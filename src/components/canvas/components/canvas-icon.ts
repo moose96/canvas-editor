@@ -2,8 +2,8 @@ import { NCC } from '@utility/relative-numbers.ts';
 import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 import { Canvg, Property } from 'canvg';
 
-import CanvasControl, { CanvasControlProps } from './canvas-control.ts';
-import EventManager from './event-manager.ts';
+import CanvasControl, { CanvasControlProps } from '../models/canvas-control.ts';
+import EventManager from '../models/event-manager.ts';
 
 export interface CanvasIconProps extends CanvasControlProps {
   content?: string;
