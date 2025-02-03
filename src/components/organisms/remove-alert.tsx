@@ -36,6 +36,7 @@ const RemoveAlert = forwardRef<HTMLDialogElement, RemoveAlertProps>(({ onAction 
           className="absolute top-8 right-8 w-8 h-8"
           icon={<Close />}
           onClick={handleClick(RemoveAlertAction.Close)}
+          ariaLabel="Close dialog"
         />
         <div className="flex flex-col items-center max-w-[calc(18.125rem_+_90px)]">
           <Alert className="w-[18.125rem] h-[18.125rem] text-red" />
