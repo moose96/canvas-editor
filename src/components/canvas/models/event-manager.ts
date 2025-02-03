@@ -24,10 +24,20 @@ export default class EventManager {
     this.canvas.addEventListener('pointermove', this.handleEvent.bind(this));
   }
 
+  /**
+   * Adds CanvasControl instance to event manager
+   *
+   * @param control
+   */
   register(control: CanvasControl) {
     this.controls.add(control);
   }
 
+  /**
+   * Removes CanvasControl instance from event manager
+   *
+   * @param control
+   */
   unregister(control: CanvasControl) {
     this.controls.delete(control);
   }

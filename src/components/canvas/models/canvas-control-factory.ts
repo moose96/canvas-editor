@@ -20,6 +20,13 @@ export default class CanvasControlFactory {
     private eventManager: EventManager,
   ) {}
 
+  /**
+   * It creates a CanvasControl instance and its subclasses. The syntax is similar to React.createElement
+   *
+   * @param control
+   * @param props
+   * @param children
+   */
   create<Props extends CanvasControlProps, Return extends CanvasControl>(
     control: CanvasControlConstructor<Props, Return>,
     props?: Props,

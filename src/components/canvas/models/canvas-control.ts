@@ -22,7 +22,12 @@ export default class CanvasControl extends EventTarget {
   public paddingX: NumberCanvasContext = NCC`0`;
   public paddingY: NumberCanvasContext = NCC`0`;
   public children: (CanvasControl | ((control: CanvasControl) => void))[] = [];
+
+  /**
+   * Shape of collision detection. It's used by EventManager
+   */
   public collisionShape: CollisionShape = CollisionShape.Rectangle;
+
   protected factory: CanvasControlFactory;
 
   constructor(
@@ -46,6 +51,10 @@ export default class CanvasControl extends EventTarget {
     }
   }
 
+  /**
+   * Cleans up the instance of CanvasControl and its children. Should be called before Garbage Collector might
+   * clean up the instance
+   */
   destructor() {
     this.eventManager.unregister(this);
     this.children.forEach((child) => {
@@ -55,10 +64,16 @@ export default class CanvasControl extends EventTarget {
     });
   }
 
+  /**
+   * Returns DOMRect boundary of the CanvasControl
+   */
   get boundary() {
     return new DOMRect(this.x, this.y, this.width, this.height);
   }
 
+  /**
+   * Draws the children of the CanvasControl. This method should be overridden in subclasses
+   */
   async draw() {
     this.children.forEach((child) => {
       if (typeof child === 'function') {
@@ -70,6 +85,12 @@ export default class CanvasControl extends EventTarget {
     });
   }
 
+  /**
+   * Moves the CanvasControl of given values
+   *
+   * @param deltaX
+   * @param deltaY
+   */
   move(deltaX: NumberCanvasContext, deltaY: NumberCanvasContext) {
     this.x = NCC`${this.x + deltaX}`;
     this.y = NCC`${this.y + deltaY}`;
@@ -85,6 +106,12 @@ export default class CanvasControl extends EventTarget {
     this.dispatchEvent(new Event('change'));
   }
 
+  /**
+   * Resizes the CanvasControl of given values
+   *
+   * @param deltaWidth
+   * @param deltaHeight
+   */
   resize(deltaWidth: NumberCanvasContext, deltaHeight: NumberCanvasContext) {
     this.width = NCC`${this.width + deltaWidth}`;
     this.height = NCC`${this.height + deltaHeight}`;

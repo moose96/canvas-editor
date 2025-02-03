@@ -6,7 +6,14 @@ import CanvasControl, { CanvasControlProps } from '../models/canvas-control.ts';
 import EventManager from '../models/event-manager.ts';
 
 export interface CanvasIconProps extends CanvasControlProps {
+  /**
+   * SVG string of the icon
+   */
   content?: string;
+
+  /**
+   * Color of the icon
+   */
   color?: string;
 }
 

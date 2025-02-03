@@ -1,3 +1,6 @@
+/**
+ * Prompts user for image file and return it as base64 string.
+ */
 export default async function readImageFile() {
   const input = document.createElement('input');
   input.type = 'file';

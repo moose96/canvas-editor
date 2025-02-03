@@ -1,4 +1,4 @@
-import EventManager from '@components/canvas/event-manager.ts';
+import EventManager from '@components/canvas/models/event-manager.ts';
 import { HTMLCanvasElement } from '@playcanvas/canvas-mock';
 import RelativeNumbersConverter from '@utility/relative-numbers-converter.ts';
 
