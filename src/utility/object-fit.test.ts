@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { containImage,coverTarget } from './object-fit';
+import { containImage, coverTarget } from './object-fit';
 
 describe('test coverTarget', () => {
   it('cuts image when imgAspect > canvasAspect', () => {
@@ -10,14 +10,14 @@ describe('test coverTarget', () => {
     const result = coverTarget(200, 100, canvasWidth, canvasHeight);
 
     expect(result).toEqual([
-      50,  // sx
-      0,   // sy
+      50, // sx
+      0, // sy
       100, // sWidth
       100, // sHeight
-      0,   // dx
-      0,   // dy
+      0, // dx
+      0, // dy
       canvasWidth, // dWidth
-      canvasHeight // dHeight
+      canvasHeight, // dHeight
     ]);
   });
 
@@ -28,14 +28,14 @@ describe('test coverTarget', () => {
     const result = coverTarget(100, 200, canvasWidth, canvasHeight);
 
     expect(result).toEqual([
-      0,    // sx
-      50,   // sy
-      100,  // sWidth
-      100,  // sHeight
-      0,    // dx
-      0,    // dy
+      0, // sx
+      50, // sy
+      100, // sWidth
+      100, // sHeight
+      0, // dx
+      0, // dy
       canvasWidth, // dWidth
-      canvasHeight // dHeight
+      canvasHeight, // dHeight
     ]);
   });
 });
@@ -48,14 +48,14 @@ describe('test containImage', () => {
     const result = containImage(200, 100, canvasWidth, canvasHeight);
 
     expect(result).toEqual([
-      0,      // sx
-      0,      // sy
-      200,    // sWidth
-      100,    // sHeight
-      0,      // dx
-      37.5,   // dy
-      150,    // dWidth
-      75      // dHeight
+      0, // sx
+      0, // sy
+      200, // sWidth
+      100, // sHeight
+      0, // dx
+      37.5, // dy
+      150, // dWidth
+      75, // dHeight
     ]);
   });
 
@@ -66,14 +66,14 @@ describe('test containImage', () => {
     const result = containImage(100, 200, canvasWidth, canvasHeight);
 
     expect(result).toEqual([
-      0,      // sx
-      0,      // sy
-      100,    // sWidth
-      200,    // sHeight
-      37.5,   // dx
-      0,      // dy
-      75,     // dWidth
-      150     // dHeight
+      0, // sx
+      0, // sy
+      100, // sWidth
+      200, // sHeight
+      37.5, // dx
+      0, // dy
+      75, // dWidth
+      150, // dHeight
     ]);
   });
 });

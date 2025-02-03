@@ -1,5 +1,5 @@
 import RemoveAlert, { RemoveAlertAction } from '@components/organisms/remove-alert.tsx';
-import { act, render, RenderResult } from '@testing-library/react';
+import { render, RenderResult } from '@testing-library/react';
 import { UserEvent, userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
